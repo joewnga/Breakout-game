@@ -1,10 +1,21 @@
 [package]
-name = "Breakout-game"
+name = "breakout_game"
 version = "0.1.0"
+authors = ["Joe"]
 edition = "2021"
 
 [dependencies]
 macroquad = "0.4.8"
+rand = "0.8.5"
+config = "0.14.0"
+
+[[bin]]
+name = "breakout_game"
+path = "src/main.rs"
+
+[lib]
+name = "breakout_game"
+path = "src/lib.rs"
 
 
 [profile.release]

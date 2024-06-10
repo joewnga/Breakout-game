@@ -91,3 +91,43 @@ pub fn init_blocks(blocks: &mut Vec<Block>) {
         blocks[rand_index].block_type = BlockType::SpawnBallOnDeath;
     }
 }
+
+
+
+//Unit Test
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ball::Circle;
+
+    // Mock function to simulate collision without macroquad runtime
+    fn mock_resolve_collision(circle: &mut Circle, vel: &mut Vec2, rect: &Rect) -> bool {
+        let closest_x = circle.center.x.clamp(rect.x, rect.x + rect.w);
+        let closest_y = circle.center.y.clamp(rect.y, rect.y + rect.h);
+
+        let distance_x = circle.center.x - closest_x;
+        let distance_y = circle.center.y - closest_y;
+
+        if distance_x.powi(2) + distance_y.powi(2) < circle.radius.powi(2) {
+            if distance_x.abs() > distance_y.abs() {
+                vel.x = -vel.x;
+            } else {
+                vel.y = -vel.y;
+            }
+            true
+        } else {
+            false
+        }
+    }
+
+    #[test]
+    fn collision_detection() {
+        let mut circle = Circle::new(vec2(50.0, 50.0), 10.0);
+        let mut vel = vec2(1.0, 1.0);
+        let rect = Rect::new(45.0, 45.0, 10.0, 10.0);
+
+       
+        let collision = mock_resolve_collision(&mut circle, &mut vel, &rect);
+        assert!(collision);
+    }
+}

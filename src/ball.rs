@@ -1,6 +1,5 @@
 use macroquad::prelude::*;
 
-// Constants
 pub const BALL_RADIUS: f32 = 15.0; 
 pub const BALL_SPEED: f32 = 400.0;
 
@@ -54,3 +53,48 @@ impl Ball {
 }
 
 
+
+//Unit Test
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Mock function to simulate ball update without macroquad runtime
+    fn mock_ball_update(ball: &mut Ball, dt: f32, screen_width: f32) {
+        ball.circle.center += ball.vel * dt * BALL_SPEED;
+
+        if ball.circle.center.x - ball.circle.radius < 0.0 {
+            ball.vel.x = 1.0;
+        }
+        if ball.circle.center.x + ball.circle.radius > screen_width {
+            ball.vel.x = -1.0;
+        }
+        if ball.circle.center.y - ball.circle.radius < 0.0 {
+            ball.vel.y = 1.0;
+        }
+    }
+
+    // Mock screen dimensions
+    const MOCK_SCREEN_WIDTH: f32 = 800.0;
+    
+
+    #[test]
+    fn ball_initial_position() {
+    
+        let ball = Ball::new(vec2(50.0, 50.0));
+        
+        // Assert that the ball's initial position is set correctly
+        assert_eq!(ball.circle.center.x, 50.0);
+        assert_eq!(ball.circle.center.y, 50.0);
+    }
+
+    #[test]
+    fn ball_update_position() {
+        
+        let mut ball = Ball::new(vec2(50.0, 50.0));
+        mock_ball_update(&mut ball, 1.0, MOCK_SCREEN_WIDTH); // Assuming dt = 1.0 for simplicity
+        
+        // Assert that the ball's position has changed
+        assert!(ball.circle.center.x != 50.0 || ball.circle.center.y != 50.0);
+    }
+}
