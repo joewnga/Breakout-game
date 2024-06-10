@@ -1,0 +1,8 @@
+[game]
+initial_player_lives = 3
+ball_speed = 400.0
+
+[blocks]
+block_width = 100.0
+block_height = 40.0
+layers = ["RED", "ORANGE", "YELLOW", "GREEN", "BLUE", "PURPLE"]
